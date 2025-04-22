@@ -1,3 +1,3 @@
 module.exports={
-    JWT_SECERET:"FRONXTURBO"
+    JWT_SECRET:"FRONXTURBO"
 }
