@@ -4,36 +4,48 @@ const { JWT_SECRET } = require("../config")
 const jwt =require ("jsonwebtoken")
 const zod=require("zod")
 const { authMiddleware } = require("../middleware")
+const { AccountModel } = require("../models/AccountModel")
+const { default: mongoose } = require("mongoose")
 
 
-const router=express.Router()
+
+const userRouter=express.Router()
 
 const signupSchema=zod.object({
-    username:zod.string().email,
+    email:zod.string().email(),
     password:zod.string(),
     firstName:zod.string(),
     lastName:zod.string(),
 })
 
 const signinSchema = zod.object({
-    username: zod.string().email(),
+    email: zod.string().email(),
 	password: zod.string()
 })
 
 
 
 
-router.post("/signup",async (req,res)=>{
+userRouter.post("/signup",async (req,res)=>{
+ 
     const body=req.body
-    const {success}=signupSchema.safeParse(req.body)
-    if(!success){
+    // console.log(req.body)
+    const parsed=signupSchema.safeParse(req.body)
+    if(!parsed.success){
         return res.json({
-            message:"Email already taken/Incorrect inputs"
+            message:"Email already taken/Incorrect inputs",
+            errors: parsed.error.errors,
         })
     }
+
+    
+ 
+
+
     const user= UserModel.findOne({
-        username:body.username
+        email:body.email
     })
+    // console.log(user)
     if(user._id){
         res.json({
             message:"Email already taken/Incorrect inputs"
@@ -41,7 +53,21 @@ router.post("/signup",async (req,res)=>{
         })
     }
 
+   
     const dbUser=await UserModel.create(body)
+    const userId=dbUser._id
+    const email=dbUser.email
+
+
+// Creating Dummy account balance for User------>>>>>>>>>
+
+await AccountModel.create({
+    email,
+    userId,
+    balance: 1 + Math.random() *10000
+})
+
+
     const token=jwt.sign({
         userId:dbUser._id
     },JWT_SECRET)
@@ -56,7 +82,7 @@ router.post("/signup",async (req,res)=>{
 
 // Signin Route---->>>>>>>>>
 
-router.post("signin",async(req,res)=>{
+userRouter.post("/signin",async(req,res)=>{
     const { success } = signinSchema.safeParse(req.body)
     if (!success) {
         return res.status(411).json({
@@ -64,8 +90,8 @@ router.post("signin",async(req,res)=>{
         })
     }
 
-    const user = await User.findOne({
-        username: req.body.username,
+    const user = await UserModel.findOne({
+        email: req.body.email,
         password: req.body.password
     });
 
@@ -95,7 +121,7 @@ const updateSchema=zod.object({
 
 
 
-router.put("/",authMiddleware,async(req,res)=>{
+userRouter.put("/",authMiddleware,async(req,res)=>{
     const {success}=updateSchema.safeParse(req.body)
     if(!success){
         res.status(411).json({
@@ -113,7 +139,7 @@ router.put("/",authMiddleware,async(req,res)=>{
 
 // Search Endpoint --->
 
-router.get("/bulk", async (req, res) => {
+userRouter.get("/bulk", async (req, res) => {
     const filter = req.query.filter || "";
 
     const users = await User.find({
@@ -130,7 +156,7 @@ router.get("/bulk", async (req, res) => {
 
     res.json({
         user: users.map(user => ({
-            username: user.username,
+            email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
             _id: user._id
@@ -139,5 +165,5 @@ router.get("/bulk", async (req, res) => {
 })
 
 module.exports={
-    router
+    userRouter
 }
