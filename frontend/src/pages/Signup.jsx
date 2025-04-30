@@ -62,7 +62,7 @@ import { useNavigate } from "react-router-dom"
             return
           }
           try{
-          const response = await axios.post("http://localhost:8080/api/v1/user/signup", {
+          const response = await axios.post("https://mymoney-backend.onrender.com/api/v1/user/signup", {
             email,
             firstName,
             lastName,
@@ -70,7 +70,7 @@ import { useNavigate } from "react-router-dom"
           });
           console.log(response)
           localStorage.setItem("token", response.data.token)
-          navigate("/")
+          navigate("/dashboard")
         }catch(err){
           console.log(err)
           alert(err)

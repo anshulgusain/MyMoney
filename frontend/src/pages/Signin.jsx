@@ -21,7 +21,7 @@ const handlelogin = async() => {
     setLoading(true)
     setError(false)
   const response=await axios.post(
-    "http://localhost:8080/api/v1/user/signin",
+    "https://mymoney-backend.onrender.com/api/v1/user/signin",
     {
       email: email,
       password: password, 
@@ -35,7 +35,7 @@ const handlelogin = async() => {
   if (response.status === 200) {
       console.log(response)
     localStorage.setItem("token", response.data.token);
-    window.location.href = "/";
+    window.location.href = "/dashboard";
   }else{
     if(response.status === 411){
       
@@ -67,7 +67,7 @@ if (loading) {
 if (error) {  
   return <div className="flex justify-center items-center h-screen">
       <div className="text-red-500 text-2xl">Error logging in</div>
-      <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.href="/signup")}>Click to Signup</div>   
+      <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.href="/")}>Click to Signup</div>   
   </div>
 }
 
@@ -90,7 +90,7 @@ if (error) {
          <div className="pt-4">
            <Button onPress={handlelogin}label={"Sign in"} />
          </div>
-         <BottomWarning label={"Don't have an account?"} buttonText={"Sign up"} to={"/signup"} />
+         <BottomWarning label={"Don't have an account?"} buttonText={"Sign up"} to={"/"} />
        </div>
      </div>
    </div>

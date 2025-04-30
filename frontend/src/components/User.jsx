@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
     const [filter, setFilter] = useState("");
     
     useEffect(() => {
-        axios.get("http://localhost:8080/api/v1/user/bulk?filter=" + filter)
+        axios.get("https://mymoney-backend.onrender.com/api/v1/user/bulk?filter=" + filter)
             .then(response => {
                 setUsers(response.data.user)
                 // console.log(users)

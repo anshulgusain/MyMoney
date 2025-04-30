@@ -21,7 +21,7 @@ const Dashboard = () => {
        setLoading(true)
         const fetchAccountDetails = async () => {
             try {
-              const response = await fetch('http://localhost:8080/api/v1/account/accountDetails', {
+              const response = await fetch('https://mymoney-backend.onrender.com/api/v1/account/accountDetails', {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const Dashboard = () => {
     if(error){
         return <div className="flex justify-center items-center h-screen">
             <div className="text-red-500 text-2xl">Error fetching account details</div>  
-            <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.href="/signup")}>Click to Signup</div>   
+            <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.href="/")}>Click to Signup</div>   
         </div>
     }
     return <div className="grid grid-cols-10 jus ">

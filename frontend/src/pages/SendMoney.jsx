@@ -25,6 +25,18 @@ return <div className='w-screen'>
         <div className="animate-spin rounded-full h-32 w-32 border-b-10 border-blue-500"></div>
     </div>
 }
+if(error){
+    return <div className='flex justify-center items-center h-screen w-full'>
+        <div className="text-red-500 text-2xl">Error fetching account details</div>  
+        <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.replace("/dashboard"))}>Click to Reload</div>   
+    </div>
+}
+if(!email || !name){
+    return <div className='flex justify-center items-center h-screen w-full'>
+        <div className="text-red-500 text-2xl">Error fetching account details</div>  
+        <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.replace("/dashboard"))}>Click to Reload</div>   
+    </div>
+}
  
  return <div className='flex '>
    
@@ -68,7 +80,7 @@ return <div className='w-screen'>
                     <button onClick={async() => {
                         setLoading(true)
                         try{
-                       const response=    await axios.post  ("http://localhost:8080/api/v1/account/transfer", {
+                       const response=    await axios.post  ("https://mymoney-backend.onrender.com/api/v1/account/transfer", {
                                 to: email,
                                 amount
                             }, {
@@ -80,8 +92,15 @@ return <div className='w-screen'>
                                 setSuccess(true)    
                                 setLoading(false)
                             }
+                            if(response.status!==200){
+                                alert(response.data.message)  
+                                setLoading(false)
+                                setError(true)  
+                                return
+                            }
                            
                         }catch(e){  
+                            alert("Error sending money")
                             setError(true)
                             setLoading(false)
                         }

@@ -8,7 +8,7 @@ function Transaction() {
 
     useEffect(() => {   
         const fetchTransactions = async () => {
-            const response = await axios.get("http://localhost:8080/api/v1/account/transactions", {
+            const response = await axios.get("https://mymoney-backend.onrender.com/api/v1/account/transactions", {
 
                 headers: {
                     "Content-Type": "application/json",

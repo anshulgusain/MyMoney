@@ -7,7 +7,7 @@ const Appbar = () => {
   
     const handleLogout = () => {
         localStorage.removeItem("token")
-        window.location.replace("/signup")
+        window.location.replace("/")
 
 
     }
@@ -23,8 +23,8 @@ const Appbar = () => {
 
 
         <div className="flex justify-end h-20 mx-4 ">
-            <Link to={"/signup"}  className="rounded-full h-15 w-15 bg-slate-200 flex justify-center mt-3 mr-2">
-                <div to={"/signup"} className="flex flex-col justify-center h-full text-xl text-[rgb(66,94,189)] font-bold">
+            <Link to={"/"}  className="rounded-full h-15 w-15 bg-slate-200 flex justify-center mt-3 mr-2">
+                <div to={"/"} className="flex flex-col justify-center h-full text-xl text-[rgb(66,94,189)] font-bold">
                     U
                 </div>
             </Link>

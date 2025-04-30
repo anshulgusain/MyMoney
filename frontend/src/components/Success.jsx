@@ -11,7 +11,7 @@ const Success = () => {
     }, 1000);
 
     const redirect = setTimeout(() => {
-      navigate('/');
+      navigate('/dashboard');
     }, 5000);
 
     return () => {
