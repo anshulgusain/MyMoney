@@ -139,10 +139,10 @@ userRouter.put("/",authMiddleware,async(req,res)=>{
 
 // Search Endpoint --->
 
-userRouter.get("/bulk", async (req, res) => {
+userRouter.get("/bulk",async (req, res) => {
     const filter = req.query.filter || "";
 
-    const users = await User.find({
+    const users = await UserModel.find({
         $or: [{
             firstName: {
                 "$regex": filter

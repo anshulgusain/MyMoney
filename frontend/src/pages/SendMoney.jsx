@@ -2,19 +2,37 @@ import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
 import { useState } from 'react';
 import Appbar from '../components/Appbar';
+import Navbar from '../components/Navbar';
+import Success from '../components/Success';
 
 const SendMoney = () => {
     const [searchParams] = useSearchParams();
     const email = searchParams.get("email");
     const name = searchParams.get("name");
     const [amount, setAmount] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
+if(success){
+return <div className='w-screen'>
 
+   <Success />
+    </div>
+
+
+}if(loading){
+    return <div className='flex justify-center items-center h-screen w-full'>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-10 border-blue-500"></div>
+    </div>
+}
  
- return <div>
-    <Appbar />
+ return <div className='flex '>
+   
+    <Navbar />
+    
 
 
-<div className="flex justify-center h-screen bg-gray-100">
+<div className="flex justify-center h-screen bg-gray-100 w-9/11">
         <div className="h-full flex flex-col justify-center">
             <div
                 className="border h-min text-card-foreground max-w-md p-4 space-y-8 w-96 bg-white shadow-lg rounded-lg"
@@ -47,15 +65,27 @@ const SendMoney = () => {
                         placeholder="Enter amount"
                     />
                     </div>
-                    <button onClick={() => {
-                        axios.post("http://localhost:8080/api/v1/account/transfer", {
-                            to: email,
-                            amount
-                        }, {
-                            headers: {
-                                Authorization: "Bearer " + localStorage.getItem("token")
+                    <button onClick={async() => {
+                        setLoading(true)
+                        try{
+                       const response=    await axios.post  ("http://localhost:8080/api/v1/account/transfer", {
+                                to: email,
+                                amount
+                            }, {
+                                headers: {
+                                    Authorization: "Bearer " + localStorage.getItem("token")
+                                }
+                            })
+                            if(response.status===200){
+                                setSuccess(true)    
+                                setLoading(false)
                             }
-                        })
+                           
+                        }catch(e){  
+                            setError(true)
+                            setLoading(false)
+                        }
+                       
                     }} className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
                         Initiate Transfer
                     </button>

@@ -11,12 +11,28 @@ import { useNavigate } from "react-router-dom"
 
 
 
+
  const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading,setLaoding]=useState("")
+  const [err,setError]=useState("")
   const navigate = useNavigate();
+
+
+  if(loading){  
+    return <div className="flex justify-center items-center h-screen">
+      <div className="animate-bounce rounded-full h-32 w-32 border-b-10 border-blue-500"></div>
+    </div>
+  }
+  if(err){
+    return <div className="flex justify-center items-center h-screen">
+      <div className="text-red-500 text-2xl">Error fetching account details</div>   
+      <div className="text-blue-950 text-2xl cursor-pointer " onClick={(()=>window.location.reload())}>Click to Reload</div>  
+    </div>
+  }
 
   return <div className="bg-slate-300 h-screen flex justify-center">
   <div className="flex flex-col justify-center">
@@ -38,6 +54,14 @@ import { useNavigate } from "react-router-dom"
       <div className="pt-4">
         <Button onPress={async () => {
           // console.log("button")
+          setLaoding(true)
+          setError(false)
+          if (firstName === "" || lastName === "" || email === "" || password === "") {
+            alert("Please fill all the fields")
+            setLaoding(false)
+            return
+          }
+          try{
           const response = await axios.post("http://localhost:8080/api/v1/user/signup", {
             email,
             firstName,
@@ -47,6 +71,12 @@ import { useNavigate } from "react-router-dom"
           console.log(response)
           localStorage.setItem("token", response.data.token)
           navigate("/")
+        }catch(err){
+          console.log(err)
+          alert(err)
+          setError(true)
+          setLaoding(false)
+        } 
         }} label={"Sign up"} />
       </div>
       <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
