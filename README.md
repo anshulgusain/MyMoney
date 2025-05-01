@@ -1,5 +1,5 @@
 ## 💸 MyMoney — A Paytm-like Money Transfer App
-##Live Url-https://frontend-drab-alpha.vercel.app/
+##Live Url -https://frontend-drab-alpha.vercel.app/
 
 MoneyX is a secure and modern web application that enables users to send and receive money, similar to Paytm. Built with a full-stack JavaScript architecture using **React**, **Express.js**, **MongoDB (with transaction support)**, and styled using **Tailwind CSS**.
 
@@ -43,8 +43,6 @@ Responsive UI: Tailwind CSS-based layout for mobile and desktop.
 
 ✅ Notifications and email alerts
 
-📸 Screenshots
-(Add some screenshots or gifs of your app here)
 
 🧑‍💻 Author
 Anshul Gusain
